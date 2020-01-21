@@ -1,0 +1,235 @@
+---
+output:
+  pdf_document:
+    latex_engine: xelatex
+header-includes:
+    - \usepackage{fancyhdr}
+    - \usepackage{fontspec}
+    - \usepackage{xcolor}
+    - \geometry{left = 0.5in,right = 0.5in}
+mainfont: Roboto
+sansfont: Roboto
+urlcolor: badgerred
+---
+<!-- define color and adjust lengths for header and footer-->
+\definecolor{badgerred}{RGB}{197,5,12}
+\addtolength{\headheight}{3.0cm}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\footskip}{-0.225in}
+
+<!-- % setup header -->
+\pagestyle{fancy}
+\fancyhf{}
+
+<!-- header content -->
+### 'Uncomment the line of code below to include a header; to uncomment, remove the # and the single quotes'
+### '\fancyhead[L]{\raisebox{-0.25\height}{\includegraphics[height = 2.5cm]{path_to_your_header_here.png}}}'
+\fancyhead[R]{\Huge Genomic Clustering Report\\
+\Large `r paste(Sys.Date())`}
+
+<!-- create red header line -->
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headrule}{\hbox to\headwidth{%
+    \color{badgerred}\leaders\hrule height \headrulewidth\hfill}}
+
+<!-- footer content -->
+\fancyfoot[C]{For research use only, not for clinical use.}
+\fancyfoot[R]{\thepage}
+
+<!-- create red footer line -->
+\renewcommand{\footrulewidth}{1pt}
+\renewcommand{\footrule}{\hbox to\headwidth{%
+    \color{badgerred}\leaders\hrule height \headrulewidth\hfill}}
+
+```{r include = FALSE}
+
+### make sure the following libraries are installed
+library(plyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+library(ggtree)
+library(phytools)
+
+### get date of report generation
+date <- Sys.Date()
+
+### set figure size
+knitr::opts_chunk$set(out.width = "7.5in", out.height = "8in", fig.align = "left")
+
+### set seed for reproducibility
+set.seed(123)
+
+```
+
+### *`r species`* Analysis
+
+### 'We recommend including the species and number of isolates included in your analysis, as well as a sentence describing the proper use of your results'
+
+The analysis of the *`species`* samples (n = `num.iso`) has been completed. These results must always be used in conjunction with epidemiological data when determining if isolates are epidemiologically linked. This analysis should not be used as a replacement for a thorough epidemiological investigation.
+
+### SNP Heatmap
+
+### 'We recommend including the language below (or your own version of it) for those unfamiliar with interpreting SNP heatmaps'
+
+The number of Single Nucleotide Polymorphisms (SNPs) between each sample is shown on the heatmap below. There is no hard and fast rule for determining how many SNPs are needed to classify an outbreak. Generally it is best to look for patterns in the data between the SNP data and the core-genome tree.
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+### This block midpoint-roots a tree and plots it with a SNP heatmap
+
+### SNP matrix file; change delimiter as necessary
+snp_mat <- read.delim("/path/to/matrix.tsv",
+  header = T,
+  stringsAsFactors = F,
+  sep = "\t")
+
+### path to tree in newick format
+nwk <- "/path/to/tree.newick"
+
+### read tree and midpoint root
+tree <-  read.tree(nwk)
+mpt <- midpoint.root(tree)
+
+### uncomment if column names begin with a number
+# colnames(snp_mat) <- gsub("X","",colnames(snp_mat))
+
+### replace any "." with "-" in column names
+colnames(snp_mat) <- gsub("\\.","-",colnames(snp_mat))
+
+### plot midpoint-rooted tree
+gtree <- ggtree(mpt, size  = .25, branch.length = "none")
+
+### convert midpoint-rooted tree to dataframe
+mpt.fort <- fortify(mpt)
+
+### get vertical order of tip labels
+mpt.tip <- mpt.fort[which(mpt.fort$isTip ==  TRUE),]
+mpt.ord <- mpt.tip$label[order(mpt.tip$y)]
+
+### order snp matrix by vertical order of tip labels
+snp_mat <- snp_mat[c(mpt.ord),c(mpt.ord)]
+
+### alter these plotting defaults as necessary
+
+### heatmap width relative to plot
+heatmap_width <-
+
+### font size for heatmap row and column names
+axis_font_size <-
+
+### font size for heatmap values
+cell_font_size <-
+
+### tree offset from heatmap
+tree_offset <-
+
+### offset of column names from heatmap
+col_offset <-
+
+### offset of row names names from heatmap
+row_offset <-
+
+### legend title font size
+legend_title_size <-
+
+### legend body font size
+legend_text_size <-
+
+### height of heatmap colourbar
+colourbar_height <-
+
+### width of heatmap colourbar
+colourbar_width <-
+
+### ggtree will often crop the figure too small; subtract from ymin and add to ymax to fix this
+ymin <- min(gtree$data$y) - 1
+ymax <- max(gtree$data$y) + 1
+
+### main tree plotting function
+gheatmap(gtree, snp_mat,
+  width = heatmap_width,
+  offset = tree_offset,
+  cell_labels = TRUE,
+  cell_font_size = cell_font_size,
+  font.size = axis_font_size,
+  colnames_angle = 90,
+  rownames_angle = 0,
+  colnames_offset = col_offset,
+  rownames_offset = row_offset) +
+
+### set heatmap colourbar colors and limits
+scale_fill_viridis_c(limits = c(1,(max(snp_mat)+1)),
+  na.value = "white",
+  name = "SNPs",
+  guide = "colourbar") +
+
+### set plot y limits
+ylim(ymin,ymax) +
+
+### remove whitespace around plot and add legend
+theme(plot.margin = unit(c(0,0,0,0), "mm"),
+  legend.box = "horizontal",
+  legend.text = element_text(size = legend_text_size),
+  legend.title = element_text(size = legend_title_size),
+  legend.position = "bottom",
+  legend.margin = margin(0,0,0,0)) +
+
+### place heatmap colourbar beneath the heatmap (rather than beside)
+guides(fill = guide_colourbar(title.position = "top",
+  title.hjust = 0.5,
+  barheight = colourbar_height,
+  barwidth = colourbar_width))
+
+```
+\newpage
+
+### Phylogenetic tree
+
+### 'We recommend including the language below (or your own version of it) for those unfamiliar with interpreting phylogenetic trees'
+
+Using variation within the genome, we can estimate how related isolates are. We do this by determining if isolates share a similar common ancestor. Here we are looking for isolates that cluster together and share a small amount of horizontal distance on the tree. Bootstrap values are shown on the tree. A bootstrap value greater than 95 suggests the placement of a branch on the tree is well supported.
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+### This block plots the midpint-rooted tree with bootstrap values
+
+### bootstrap cutoff; plot boostrap values above this threshold
+boot_thresh <- 95
+
+### main tree plotting function
+q <- ggtree(mpt, color = "black") +
+
+### add boostrap values as node labels
+geom_nodelab(aes(label = label,
+  x = branch,
+  subset = !isTip & (as.numeric(label) > boot_thresh)),
+  vjust = -.5,
+  nudge_x = -.0005,
+  size = 1.75) +
+
+### add tip labels
+geom_tiplab(size = 1.75) +
+
+### add tree scale
+geom_treescale(offset = .1,
+  y = 0,
+  x = 0,
+  fontsize = 1.75) +
+
+### remove whitespace around plot
+theme(plot.margin = unit(c(0,0,0,0), "cm"))
+
+log10_ceiling <- function(x) {
+  10^(ceiling(log10(x)))
+}
+xmax <- max(q$data$x) + (log10_ceiling(max(q$data$x))/10)
+xmin <- 0
+
+q + xlim(xmin,xmax) + ylim(0,max(q$data$y))
+
+```
+
+### Methods
+
+### 'We recommend including the methods you used to generate your data here'
