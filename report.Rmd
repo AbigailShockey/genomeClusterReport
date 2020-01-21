@@ -80,15 +80,15 @@ The number of Single Nucleotide Polymorphisms (SNPs) between each sample is show
 
 ### SNP matrix file; change delimiter as necessary
 snp_mat <- read.delim("/path/to/matrix.tsv",
-  header = T,
-  stringsAsFactors = F,
-  sep = "\t")
+    header = T,
+    stringsAsFactors = F,
+    sep = "\t")
 
 ### path to tree in newick format
 nwk <- "/path/to/tree.newick"
 
 ### read tree and midpoint root
-tree <-  read.tree(nwk)
+tree <- read.tree(nwk)
 mpt <- midpoint.root(tree)
 
 ### uncomment if column names begin with a number
@@ -110,76 +110,76 @@ mpt.ord <- mpt.tip$label[order(mpt.tip$y)]
 ### order snp matrix by vertical order of tip labels
 snp_mat <- snp_mat[c(mpt.ord),c(mpt.ord)]
 
-### alter these plotting defaults as necessary
+### alter these plotting defaults as necessary; these are what we've found work best for our data
 
 ### heatmap width relative to plot
-heatmap_width <-
+heatmap_width <- 25
 
 ### font size for heatmap row and column names
-axis_font_size <-
+axis_font_size <- 2.25
 
 ### font size for heatmap values
-cell_font_size <-
+cell_font_size <- 2.25
 
 ### tree offset from heatmap
-tree_offset <-
+tree_offset <- 35
 
 ### offset of column names from heatmap
-col_offset <-
+col_offset <- 0.25
 
 ### offset of row names names from heatmap
-row_offset <-
+row_offset <- -34
 
 ### legend title font size
-legend_title_size <-
+legend_title_size <- 8
 
 ### legend body font size
-legend_text_size <-
+legend_text_size <- 6
 
 ### height of heatmap colourbar
-colourbar_height <-
+colourbar_height <- 0.5
 
 ### width of heatmap colourbar
-colourbar_width <-
+colourbar_width <- 7
 
 ### ggtree will often crop the figure too small; subtract from ymin and add to ymax to fix this
-ymin <- min(gtree$data$y) - 1
+ymin <- min(gtree$data$y) - 6.5
 ymax <- max(gtree$data$y) + 1
 
 ### main tree plotting function
 gheatmap(gtree, snp_mat,
-  width = heatmap_width,
-  offset = tree_offset,
-  cell_labels = TRUE,
-  cell_font_size = cell_font_size,
-  font.size = axis_font_size,
-  colnames_angle = 90,
-  rownames_angle = 0,
-  colnames_offset = col_offset,
-  rownames_offset = row_offset) +
+    width = heatmap_width,
+    offset = tree_offset,
+    cell_labels = TRUE,
+    cell_font_size = cell_font_size,
+    font.size = axis_font_size,
+    colnames_angle = 90,
+    rownames_angle = 0,
+    colnames_offset = col_offset,
+    rownames_offset = row_offset) +
 
 ### set heatmap colourbar colors and limits
 scale_fill_viridis_c(limits = c(1,(max(snp_mat)+1)),
-  na.value = "white",
-  name = "SNPs",
-  guide = "colourbar") +
+    na.value = "white",
+    name = "SNPs",
+    guide = "colourbar") +
 
 ### set plot y limits
 ylim(ymin,ymax) +
 
 ### remove whitespace around plot and add legend
 theme(plot.margin = unit(c(0,0,0,0), "mm"),
-  legend.box = "horizontal",
-  legend.text = element_text(size = legend_text_size),
-  legend.title = element_text(size = legend_title_size),
-  legend.position = "bottom",
-  legend.margin = margin(0,0,0,0)) +
+    legend.box = "horizontal",
+    legend.text = element_text(size = legend_text_size),
+    legend.title = element_text(size = legend_title_size),
+    legend.position = "bottom",
+    legend.margin = margin(0,0,0,0)) +
 
 ### place heatmap colourbar beneath the heatmap (rather than beside)
 guides(fill = guide_colourbar(title.position = "top",
-  title.hjust = 0.5,
-  barheight = colourbar_height,
-  barwidth = colourbar_width))
+    title.hjust = 0.5,
+    barheight = colourbar_height,
+    barwidth = colourbar_width))
 
 ```
 \newpage
@@ -194,39 +194,63 @@ Using variation within the genome, we can estimate how related isolates are. We 
 
 ### This block plots the midpint-rooted tree with bootstrap values
 
+### alter these plotting defaults as necessary; these are what we've found work best for our data
+
 ### bootstrap cutoff; plot boostrap values above this threshold
 boot_thresh <- 95
 
-### main tree plotting function
-q <- ggtree(mpt, color = "black") +
+### size of node label text
+node_text_size <- 1.75
 
-### add boostrap values as node labels
-geom_nodelab(aes(label = label,
-  x = branch,
-  subset = !isTip & (as.numeric(label) > boot_thresh)),
-  vjust = -.5,
-  nudge_x = -.0005,
-  size = 1.75) +
+### nudge node label text horizontally
+x_nudge <- -.0005
 
-### add tip labels
-geom_tiplab(size = 1.75) +
+###
+scale_offset <- .1
 
-### add tree scale
-geom_treescale(offset = .1,
-  y = 0,
-  x = 0,
-  fontsize = 1.75) +
+### tree scale font size
+scale_font_size <- 1.75
 
-### remove whitespace around plot
-theme(plot.margin = unit(c(0,0,0,0), "cm"))
+### tip label font size
+tip_font_size <- 1.75
+
+### ggtree will often crop the figure too small; add to xmax to fix this
+### we've found the following function calculates a decent value to add to xmax:
 
 log10_ceiling <- function(x) {
   10^(ceiling(log10(x)))
 }
+
 xmax <- max(q$data$x) + (log10_ceiling(max(q$data$x))/10)
 xmin <- 0
 
-q + xlim(xmin,xmax) + ylim(0,max(q$data$y))
+### main tree plotting function
+ggtree(mpt, color = "black") +
+
+### add boostrap values as node labels
+geom_nodelab(aes(x = branch,
+  label = label,
+  subset = !isTip & (as.numeric(label) > boot_thresh)),
+  vjust = -.5,
+  nudge_x = x_nudge,
+  size = node_text_size) +
+
+### add tip labels
+geom_tiplab(size = tip_font_size) +
+
+### add tree scale
+geom_treescale(offset = scale_offset,
+    fontsize = scale_font_size,
+    y = 0,
+    x = 0) +
+
+### set x limits
+xlim(xmin,xmax) +
+
+### remove whitespace around plot
+theme(plot.margin = unit(c(0,0,0,0), "cm"))
+
+
 
 ```
 
