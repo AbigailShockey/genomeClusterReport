@@ -22,13 +22,13 @@ RUN apt-get update && \
   pandoc \
   pandoc-citeproc\
   wget\
-  imagemagick\
-  libmagick++-dev\
-  texlive-latex-base\
-  texlive-fonts-recommended\
-  texlive-latex-recommended\
-  texlive-latex-extra\
-  texlive-xetex\
+  imagemagick \
+  libmagick++-dev \
+  texlive-latex-base \
+  texlive-fonts-recommended \
+  texlive-latex-recommended \
+  texlive-latex-extra \
+  texlive-xetex \
   fonts-roboto
 
 # add keys and ppa; update sources; install latest version of R
