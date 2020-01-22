@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-  echo "Generate a report from the Dryad analysis pipeline."
+  echo "Generate a genomic clustering report using Rmakdown."
   echo "Usage:"
   echo "      run_report.sh <options>"
   echo "Options:"
