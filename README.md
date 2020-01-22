@@ -78,7 +78,7 @@ reshape2
 
 Many of these libraries have overlapping dependencies that will be installed by default in Rstudio. 
 
-Note: The report relies on a forked repository of ggtree, so you will need to install ggtree using devtools with the following command:
+Note: Rendering the report requires a forked repository of ggtree, so you will need to install ggtree using devtools with the following command:
 
 ```
 devtools::install_github('AbigailShockey/ggtree')
