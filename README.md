@@ -4,7 +4,7 @@ These scripts generate a genome clustering report using R Markdown
 
 ### Rendering the Report
 
-The genus and species of your isolates, the number of isolates in your analysis, a tab-delimited SNP matrix and a newick tree file are the required inputs for rendering the report. The report can be rendered using the generateReport.sh wrapper script or manually rendered in Rstudio.
+The required inputs for rendering the report are the genus and species of your isolates, the number of isolates in your analysis, a tab-delimited SNP matrix and a newick tree file. The report can be rendered using the generateReport.sh wrapper script or manually rendered in RStudio.
 
 Usage:
 
@@ -26,7 +26,7 @@ Options:
 
 A Docker container of the scripts' dependencies can be built using the Dockerfile included in this repository, or pulled from [ashockey/cluster-report](https://hub.docker.com/repository/docker/ashockey/cluster-report). This report has many dependencies, so we highly recommend using the Docker container. 
 
-If you choose to manually render the report in Rstudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):
+If you choose to manually render the report in RStudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):
 
 * knitr
 * rmarkdown
@@ -36,7 +36,7 @@ If you choose to manually render the report in Rstudio, you will need to install
 * ggtree
 * phytools
 
-Many of these libraries have dependencies that will be installed by default in Rstudio. 
+Many of these libraries have dependencies that will be installed by default in RStudio. 
 
 Note: Rendering the report requires a forked repository of ggtree, so you will need to install ggtree using devtools with the following command:
 
