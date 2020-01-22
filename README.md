@@ -26,7 +26,7 @@ Options:
 
 A Docker container of the scripts' dependencies can be built using the Dockerfile included in this repository, or pulled from [ashockey/cluster-report](https://hub.docker.com/repository/docker/ashockey/cluster-report). This report has many dependencies, so we highly recommend using the Docker container. 
 
-If you choose to manually render the report in Rstudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):
+If you choose to manually render the report in RStudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):
 
 * knitr
 * rmarkdown
