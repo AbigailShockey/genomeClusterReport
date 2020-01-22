@@ -28,53 +28,51 @@ A Docker container of the scripts' dependencies can be built using the Dockerfil
 
 If you choose to manually render the report in Rstudio, you will need to install the following R libraries from the CRAN repository:
 
-httr
+> httr
 
-usethis
+> usethis
 
-covr
+> covr
 
-xml2
+> xml2
 
-roxygen2
+> roxygen2
 
-rversions
+> rversions
 
-ggplot2
+> knitr
 
-knitr
+> rmarkdown
 
-rmarkdown
+> ggplot2
 
-ape
+> plyr
 
-plyr
+> tidyverse
 
-tidytree
+> tidyr
 
-phangorn
+> tinytex
 
-BiocManager
+> magick
 
-devtools
+> devtools
 
-ggimage
+> tidytree
 
-ade4
+> BiocManager
 
-adegenet
+> ggtree
 
-tidyverse
+> ggimage
 
-tinytex
+> ape
 
-tidyr 
+> ade4
 
-magick
+> adegenet
 
-phytools
-
-reshape2
+> phytools
 
 Many of these libraries have overlapping dependencies that will be installed by default in Rstudio. 
 
