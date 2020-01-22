@@ -20,7 +20,7 @@ RUN apt-get update && \
   libxml2 \
   libxml2-dev \
   pandoc \
-  pandoc-citeproc\
+  pandoc-citeproc \
   wget\
   imagemagick \
   libmagick++-dev \
