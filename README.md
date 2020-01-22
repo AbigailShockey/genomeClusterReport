@@ -1,10 +1,10 @@
 ### Genome Cluster Report
 
-These scripts generate a genome clustering report using R Markdown
+These scripts generate a genome clustering report using R Markdown. The report includes a SNP heatmap and a midpont-rooted phylogeny labelled with bootstrap values.
 
 ### Rendering the Report
 
-The required inputs for rendering the report are the genus and species of your isolates, the number of isolates in your analysis, a tab-delimited SNP matrix and a newick tree file. The report can be rendered using the generateReport.sh wrapper script or manually rendered in RStudio.
+The required inputs for rendering the report are the genus and species of your isolates, the number of isolates in your sample, a tab-delimited SNP matrix and a newick tree file. The report can be rendered using the generateReport.sh wrapper script or manually rendered in RStudio.
 
 Usage:
 
