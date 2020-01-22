@@ -67,6 +67,8 @@ The analysis of the *`r species`* sample (n = `r num.iso`) has been completed.
 
 ### SNP Heatmap
 
+<!-- Include how to interpret the figure and your interpretation of the results here -->
+
 [Figure description and results here]
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
@@ -182,6 +184,8 @@ guides(fill = guide_colourbar(title.position = "top",
 \newpage
 
 ### Phylogenetic tree
+
+<!-- Include how to interpret the figure and your interpretation of the results here -->
 
 [Figure description and results here]
 
