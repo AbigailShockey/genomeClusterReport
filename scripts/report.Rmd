@@ -254,6 +254,6 @@ gtree + xlim(xmin,xmax)
 
 ```
 
-### Methods
+<!-- ### Methods -->
 
 <!-- We recommend including the methods you used to generate your data here -->
