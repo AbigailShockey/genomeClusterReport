@@ -24,7 +24,7 @@ Options:
 
 ### Dependencies
 
-A Docker container of the scripts' dependencies can be built using the Dockerfile included in this repository, or pulled from [ashockey/cluster-report](https://hub.docker.com/repository/docker/ashockey/cluster-report). This report has many dependencies, so we highly recommend running the generateReport.sh script using the Docker container. 
+A Docker container of the scripts' dependencies can be built using the Dockerfile included in this repository, or pulled from [ashockey/cluster-report](https://hub.docker.com/repository/docker/ashockey/cluster-report). The R Markdown script has many dependencies, so we highly recommend rendering the report with the generateReport.sh wrapper script and the Docker container. 
 
 If you choose to manually render the report in RStudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):
 
