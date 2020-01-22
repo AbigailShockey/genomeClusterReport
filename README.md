@@ -4,7 +4,7 @@ These scripts generate a genome clustering report using R Markdown
 
 ### Rendering the Report
 
-The required inputs for rendering the report are the genus and species of your isolates, the number of isolates in your analysis, a tab-delimited SNP matrix and a newick tree file. The report can be rendered using the generateReport.sh wrapper script or manually rendered in Rstudio.
+The required inputs for rendering the report are the genus and species of your isolates, the number of isolates in your analysis, a tab-delimited SNP matrix and a newick tree file. The report can be rendered using the generateReport.sh wrapper script or manually rendered in RStudio.
 
 Usage:
 
@@ -36,7 +36,7 @@ If you choose to manually render the report in Rstudio, you will need to install
 * ggtree
 * phytools
 
-Many of these libraries have dependencies that will be installed by default in Rstudio. 
+Many of these libraries have dependencies that will be installed by default in RStudio. 
 
 Note: Rendering the report requires a forked repository of ggtree, so you will need to install ggtree using devtools with the following command:
 
