@@ -44,9 +44,6 @@ urlcolor: purplepeopleeater
 ```{r include = FALSE}
 
 ### make sure the following libraries are installed
-library(plyr)
-library(tidyr)
-library(reshape2)
 library(ggplot2)
 library(ggtree)
 library(phytools)
@@ -66,7 +63,7 @@ set.seed(123)
 
 <!-- We recommend including the species and number of isolates included in your analysis, as well as a sentence describing the proper use of your results -->
 
-The analysis of the *`r species`* samples (n = `r num.iso`) has been completed. These results must always be used in conjunction with epidemiological data when determining if isolates are epidemiologically linked. This analysis should not be used as a replacement for a thorough epidemiological investigation.
+The analysis of the *`r species`* sample (n = `r num.iso`) has been completed. These results must always be used in conjunction with epidemiological data when determining if isolates are epidemiologically linked. This analysis should not be used as a replacement for a thorough epidemiological investigation.
 
 ### SNP Heatmap
 
