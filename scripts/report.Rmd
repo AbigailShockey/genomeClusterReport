@@ -63,13 +63,11 @@ set.seed(123)
 
 <!-- We recommend including the species and number of isolates included in your analysis, as well as a sentence describing the proper use of your results -->
 
-The analysis of the *`r species`* sample (n = `r num.iso`) has been completed. These results must always be used in conjunction with epidemiological data when determining if isolates are epidemiologically linked. This analysis should not be used as a replacement for a thorough epidemiological investigation.
+The analysis of the *`r species`* sample (n = `r num.iso`) has been completed.
 
 ### SNP Heatmap
 
-<!-- We recommend including the language below (or your own version of it) for those unfamiliar with interpreting SNP heatmaps -->
-
-The number of Single Nucleotide Polymorphisms (SNPs) between each sample is shown on the heatmap below. There is no hard and fast rule for determining how many SNPs are needed to classify an outbreak. Generally it is best to look for patterns in the data between the SNP data and the core-genome tree.
+[Figure description and results here]
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -185,9 +183,7 @@ guides(fill = guide_colourbar(title.position = "top",
 
 ### Phylogenetic tree
 
-<!-- We recommend including the language below (or your own version of it) for those unfamiliar with interpreting phylogenetic trees -->
-
-Using variation within the genome, we can estimate how related isolates are. We do this by determining if isolates share a similar common ancestor. Here we are looking for isolates that cluster together and share a small amount of horizontal distance on the tree. Bootstrap values are shown on the tree. A bootstrap value greater than 95 suggests the placement of a branch on the tree is well supported.
+[Figure description and results here]
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -251,6 +247,6 @@ gtree + xlim(xmin,xmax)
 
 ```
 
-<!-- ### Methods -->
+### Methods
 
-<!-- We recommend including the methods you used to generate your data here -->
+[Methods used to generate data here]
