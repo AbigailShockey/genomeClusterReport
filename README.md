@@ -36,10 +36,7 @@ If you choose to manually render the report in Rstudio, you will need to install
 * rversions
 * knitr
 * rmarkdown
-* ggplot2
-* plyr
 * tidyverse
-* tidyr
 * tinytex
 * magick
 * devtools
@@ -47,9 +44,6 @@ If you choose to manually render the report in Rstudio, you will need to install
 * BiocManager
 * ggtree
 * ggimage
-* ape
-* ade4
-* adegenet
 * phytools
 
 Many of these libraries have overlapping dependencies that will be installed by default in Rstudio. 
