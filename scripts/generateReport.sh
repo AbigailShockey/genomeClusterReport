@@ -1,17 +1,17 @@
 #!/bin/bash
 
 usage() {
-  echo "Generate a genomic clustering report using Rmakdown."
+  echo "Generate a genomic clustering report using R Markdown."
   echo "Usage:"
-  echo "      run_report.sh <options>"
+  echo "      generateReport.sh <options>"
   echo "Options:"
   echo "      Required"
-  echo "      -s      Geneous and Species eg. \"Escherichia coli\""
+  echo "      -s      Genus and Species eg. \"Escherichia coli\""
   echo "      -n      Number of isolates"
+  echo "      -m      SNP matrix file name"
+  echo "      -tr     Newick tree file"
   echo "      Optional"
   echo "      -o      Output path: defaults to /data/"
-  echo "      -m      SNP matrix file name"
-  echo "      -tr      Core-geneome newick tree file"
 }
 
 
