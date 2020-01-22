@@ -3,6 +3,10 @@ FROM ubuntu:xenial
 
 # metadata
 LABEL base.image="ubuntu:xenial"
+LABEL description="Generate a genomic clustering report using R Markdown"
+LABEL website="https://github.com/AbigailShockey/genomeClusterReport"
+LABEL maintainer="Abigail Shockey"
+LABEL maintainer.email="abigail.shockey@slh.wisc.edu"
 
 # install ubuntu dependencies
 RUN apt-get update && \
@@ -36,31 +40,11 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
   r-base-dev
 
 # install R packages
-RUN R -e "install.packages(c( \
-  'httr',\
-  'usethis',\
-  'covr',\
-  'xml2',\
-  'roxygen2',\
-  'rversions',\
-  'ggplot2',\
-  'knitr',\
+RUN R -e "install.packages(c('knitr',\
   'rmarkdown',\
-  'ape',\
-  'plyr',\
-  'tidytree',\
-  'phangorn',\
-  'BiocManager',\
-  'devtools',\
-  'ggimage',\
-  'ade4',\
-  'adegenet',\
   'tidyverse',\
-  'tinytex',\
-  'tidyr',\
-  'magick',\
-  'phytools',\
-  'reshape2'), repos = 'http://cran.us.r-project.org')" && \
+  'devtools',\
+  'phytools'), repos = 'http://cran.us.r-project.org')" && \
   R -e "devtools::install_github('AbigailShockey/ggtree')" && \
   R -e "tinytex::install_tinytex()"
 
