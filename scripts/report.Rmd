@@ -71,16 +71,9 @@ The analysis of the *`r species`* sample (n = `r num.iso`) has been completed.
 
 [Figure description and results here]
 
-```{r echo = FALSE, message = FALSE, warning = FALSE}
+```{r root-tree echo = FALSE, message = FALSE, warning = FALSE}
 
-### This block midpoint-roots a tree and plots it with a SNP heatmap
-
-### uncomment this block if you want to manually run this script in Rstudio
-### SNP matrix file; change delimiter as necessary
-### snp_mat <- read.delim("/path/to/matrix.tsv",
-###    header = T,
-###    stringsAsFactors = F,
-###    sep = "\t")
+### This block midpoint-roots the tree
 
 ### uncomment this block if you want to manually run this script in Rstudio
 ### path to tree in newick format
@@ -90,24 +83,44 @@ The analysis of the *`r species`* sample (n = `r num.iso`) has been completed.
 tree <- read.tree(nwk)
 mpt <- midpoint.root(tree)
 
-### uncomment if column names begin with a number
-colnames(snp_mat) <- gsub("X","",colnames(snp_mat))
+### store midpoint-rooted tree as dataframe
+mpt.fort <- fortify(mpt)
+
+### get vertical order of tip labels from tree dataframe 
+mpt.tip <- mpt.fort[which(mpt.fort$isTip ==  TRUE),]
+mpt.ord <- mpt.tip$label[order(mpt.tip$y)]
+
+### store base plot of midpoint-rooted tree
+gtree <- ggtree(mpt, branch.length = "none")
+
+```
+
+
+```{r format-matrix echo = FALSE, message = FALSE, warning = FALSE}
+
+### This block formats the matrix
+
+### uncomment this block if you want to manually run this script in Rstudio
+### SNP matrix file; change delimiter as necessary (defaults to \t)
+### delim <- "\t"
+### snp_mat <- read.delim("/path/to/matrix.tsv",
+###    header = T,
+###    stringsAsFactors = F,
+###    sep = delim)
+
+### uncomment if column names begin with a number; 
+### R places an X in front of #s when reading in a dataframe
+### colnames(snp_mat) <- gsub("X","",colnames(snp_mat))
 
 ### replace any "." with "-" in column names
 colnames(snp_mat) <- gsub("\\.","-",colnames(snp_mat))
 
-### plot midpoint-rooted tree
-gtree <- ggtree(mpt, size  = .25, branch.length = "none")
-
-### convert midpoint-rooted tree to dataframe
-mpt.fort <- fortify(mpt)
-
-### get vertical order of tip labels
-mpt.tip <- mpt.fort[which(mpt.fort$isTip ==  TRUE),]
-mpt.ord <- mpt.tip$label[order(mpt.tip$y)]
-
 ### order snp matrix by vertical order of tip labels
 snp_mat <- snp_mat[c(mpt.ord),c(mpt.ord)]
+
+```
+
+```{r heatmap-ploting-defaults echo = FALSE, message = FALSE, warning = FALSE}
 
 ### alter these plotting defaults as necessary; these are what we've found work best for our data
 
@@ -144,6 +157,10 @@ colourbar_width <- 7
 ### ggtree will often crop the figure too small; subtract from ymin and add to ymax to fix this
 ymin <- min(gtree$data$y) - 4
 ymax <- max(gtree$data$y) + 1
+
+```
+
+```{r plot-tree-and-heatmap echo = FALSE, message = FALSE, warning = FALSE}
 
 ### main tree plotting function
 gheatmap(gtree, snp_mat,
@@ -189,9 +206,7 @@ guides(fill = guide_colourbar(title.position = "top",
 
 [Figure description and results here]
 
-```{r echo = FALSE, message = FALSE, warning = FALSE}
-
-### This block plots the midpint-rooted tree with bootstrap values
+```{r tree-plot-defaults echo = FALSE, message = FALSE, warning = FALSE}
 
 ### alter these plotting defaults as necessary; these are what we've found work best for our data
 
@@ -212,6 +227,11 @@ scale_font_size <- 2
 
 ### tip label font size
 tip_font_size <- 2
+
+```
+```{r plot-tree echo = FALSE, message = FALSE, warning = FALSE}
+
+### This block plots the midpint-rooted tree with bootstrap values
 
 ### main tree plotting function
 gtree <- ggtree(mpt, color = "black", alpha = 0.75, size = 0.5) +
