@@ -43,18 +43,18 @@ urlcolor: purplepeopleeater
 
 ```{r include = FALSE}
 
-### make sure the following libraries are installed
+# make sure the following libraries are installed
 library(ggplot2)
 library(ggtree)
 library(phytools)
 
-### get date of report generation
+# get date of report generation
 date <- Sys.Date()
 
-### set figure size
+# set figure size
 knitr::opts_chunk$set(out.width = "7.5in", out.height = "8in", fig.align = "left")
 
-### set seed for reproducibility
+# set seed for reproducibility
 set.seed(123)
 
 ```
@@ -73,24 +73,24 @@ The analysis of the *`r species`* sample (n = `r num.iso`) has been completed.
 
 ```{r root-tree echo = FALSE, message = FALSE, warning = FALSE}
 
-### This block midpoint-roots the tree
+# This block midpoint-roots the tree
 
-### uncomment this block if you want to manually run this script in Rstudio
-### path to tree in newick format
-### nwk <- "/path/to/tree.newick"
+# uncomment this block if you want to manually run this script in Rstudio
+# path to tree in newick format
+# nwk <- "/path/to/tree.newick"
 
-### read tree and midpoint root
+# read tree and midpoint root
 tree <- read.tree(nwk)
 mpt <- midpoint.root(tree)
 
-### store midpoint-rooted tree as dataframe
+# store midpoint-rooted tree as dataframe
 mpt.fort <- fortify(mpt)
 
-### get vertical order of tip labels from tree dataframe 
+# get vertical order of tip labels from tree dataframe 
 mpt.tip <- mpt.fort[which(mpt.fort$isTip ==  TRUE),]
 mpt.ord <- mpt.tip$label[order(mpt.tip$y)]
 
-### store base plot of midpoint-rooted tree
+# store base plot of midpoint-rooted tree
 gtree <- ggtree(mpt, branch.length = "none")
 
 ```
@@ -98,71 +98,67 @@ gtree <- ggtree(mpt, branch.length = "none")
 
 ```{r format-matrix echo = FALSE, message = FALSE, warning = FALSE}
 
-### This block formats the matrix
+# This block formats the matrix
 
-### uncomment this block if you want to manually run this script in Rstudio
-### SNP matrix file; change delimiter as necessary (defaults to \t)
-### delim <- "\t"
-### snp_mat <- read.delim("/path/to/matrix.tsv",
-###    header = T,
-###    stringsAsFactors = F,
-###    sep = delim)
+# uncomment this block if you want to manually run this script in Rstudio
+# SNP matrix file; change delimiter as necessary (defaults to \t)
+# delim <- "\t"
+# snp_mat <- read.delim("/path/to/matrix.tsv",
+#    header = T,
+#    stringsAsFactors = F,
+#    sep = delim)
 
-### uncomment if column names begin with a number; 
-### R places an X in front of #s when reading in a dataframe
-### colnames(snp_mat) <- gsub("X","",colnames(snp_mat))
+# uncomment if column names begin with a number; 
+# R places an X in front of #s when reading in a dataframe
+# colnames(snp_mat) <- gsub("X","",colnames(snp_mat))
 
-### replace any "." with "-" in column names
+# replace any "." with "-" in column names
 colnames(snp_mat) <- gsub("\\.","-",colnames(snp_mat))
 
-### order snp matrix by vertical order of tip labels
+# order snp matrix by vertical order of tip labels
 snp_mat <- snp_mat[c(mpt.ord),c(mpt.ord)]
 
 ```
 
 ```{r heatmap-ploting-defaults echo = FALSE, message = FALSE, warning = FALSE}
 
-### alter these plotting defaults as necessary; these are what we've found work best for our data
+# alter these plotting defaults as necessary; these are what we've found work best for our data
 
-### heatmap width relative to plot
-heatmap_width <- 25
+# heatmap width relative to plot
+heatmap_width <- 50
 
-### font size for heatmap row and column names
+# font size for heatmap row and column names
 axis_font_size <- 2.25
 
-### font size for heatmap values
+# font size for heatmap values
 cell_font_size <- 2.25
 
-### tree offset from heatmap
-tree_offset <- 18
+# tree offset from heatmap
+tree_offset <- 1
 
-### offset of column names from heatmap
-col_offset <- 0.25
+# offset of column names from heatmap; should be negative
+col_offset <- -.1
 
-### offset of row names names from heatmap; should be negative
-row_offset <- -15
+# offset of row names names from heatmap
+row_offset <- .1
 
-### legend title font size
+# legend title font size
 legend_title_size <- 8
 
-### legend body font size
+# legend body font size
 legend_text_size <- 6
 
-### height of heatmap colourbar
+# height of heatmap colourbar
 colourbar_height <- 0.5
 
-### width of heatmap colourbar
+# width of heatmap colourbar
 colourbar_width <- 7
-
-### ggtree will often crop the figure too small; subtract from ymin and add to ymax to fix this
-ymin <- min(gtree$data$y) - 4
-ymax <- max(gtree$data$y) + 1
 
 ```
 
 ```{r plot-tree-and-heatmap echo = FALSE, message = FALSE, warning = FALSE}
 
-### main tree plotting function
+# main tree plotting function
 gheatmap(gtree, snp_mat,
     width = heatmap_width,
     offset = tree_offset,
@@ -174,16 +170,16 @@ gheatmap(gtree, snp_mat,
     colnames_offset = col_offset,
     rownames_offset = row_offset) +
 
-### set heatmap colourbar colors and limits
+# set heatmap colourbar colors and limits
 scale_fill_viridis_c(limits = c(1,(max(snp_mat)+1)),
     na.value = "white",
     name = "SNPs",
     guide = "colourbar") +
 
-### set plot y limits
+# set plot y limits
 ylim(ymin,ymax) +
 
-### remove whitespace around plot and add legend
+# remove whitespace around plot and add legend
 theme(plot.margin = unit(c(0,0,0,0), "mm"),
     legend.box = "horizontal",
     legend.text = element_text(size = legend_text_size),
@@ -191,7 +187,7 @@ theme(plot.margin = unit(c(0,0,0,0), "mm"),
     legend.position = "bottom",
     legend.margin = margin(0,0,0,0)) +
 
-### place heatmap colourbar beneath the heatmap (rather than beside)
+# place heatmap colourbar beneath the heatmap (rather than beside)
 guides(fill = guide_colourbar(title.position = "top",
     title.hjust = 0.5,
     barheight = colourbar_height,
@@ -208,35 +204,35 @@ guides(fill = guide_colourbar(title.position = "top",
 
 ```{r tree-plot-defaults echo = FALSE, message = FALSE, warning = FALSE}
 
-### alter these plotting defaults as necessary; these are what we've found work best for our data
+# alter these plotting defaults as necessary; these are what we've found work best for our data
 
-### bootstrap cutoff; plot boostrap values above this threshold
+# bootstrap cutoff; plot boostrap values above this threshold
 boot_thresh <- 95
 
-### size of node label text
+# size of node label text
 node_text_size <- 1.75
 
-### nudge node label text horizontally
+# nudge node label text horizontally
 x_nudge <- -0.00005
 
-###
+#
 scale_offset <- 0.1
 
-### tree scale font size
+# tree scale font size
 scale_font_size <- 2
 
-### tip label font size
+# tip label font size
 tip_font_size <- 2
 
 ```
 ```{r plot-tree echo = FALSE, message = FALSE, warning = FALSE}
 
-### This block plots the midpint-rooted tree with bootstrap values
+# This block plots the midpint-rooted tree with bootstrap values
 
-### main tree plotting function
+# main tree plotting function
 gtree <- ggtree(mpt, color = "black", alpha = 0.75, size = 0.5) +
 
-### add boostrap values as node labels
+# add boostrap values as node labels
 geom_nodelab(aes(x = branch,
   label = label,
   subset = !isTip & (as.numeric(label) >= boot_thresh)),
@@ -244,20 +240,20 @@ geom_nodelab(aes(x = branch,
   nudge_x = x_nudge,
   size = node_text_size) +
 
-### add tip labels
+# add tip labels
 geom_tiplab(size = tip_font_size) +
 
-### add tree scale
+# add tree scale
 geom_treescale(offset = scale_offset,
     fontsize = scale_font_size,
     y = 0,
     x = 0) +
 
-### remove whitespace around plot
+# remove whitespace around plot
 theme(plot.margin = unit(c(0,0,0,0), "cm"))
 
-### ggtree will often crop the figure too small; add to xmax to fix this
-### we've found the following function calculates a decent value to add to xmax:
+# ggtree will often crop the figure too small; add to xmax to fix this
+# we've found the following function calculates a decent value to add to xmax:
 
 log10_ceiling <- function(x) {
     10^(ceiling(log10(x)))
@@ -266,7 +262,7 @@ log10_ceiling <- function(x) {
 xmax <- max(gtree$data$x) + (log10_ceiling(max(gtree$data$x))/5)
 xmin <- 0
 
-### set x limits and plot tree
+# set x limits and plot tree
 gtree + xlim(xmin,xmax)
 
 ```
